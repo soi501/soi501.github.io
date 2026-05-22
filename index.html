@@ -1,490 +1,380 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>仮眠室</title>
+  <title>そい | Soi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --ink: #1a1814;
-      --ink2: #4a4640;
-      --ink3: #8a8480;
-      --paper: #faf8f4;
-      --paper2: #f0ede6;
-      --paper3: #e6e1d8;
-      --accent: #5c4a2a;
-      --accent2: #8b6f3e;
-      --serif: 'EB Garamond', Georgia, serif;
-      --mono: 'DM Mono', monospace;
+      --ink:#1a1814; --ink2:#4a4640; --ink3:#8a8480;
+      --paper:#faf8f4; --paper2:#f0ede6; --paper3:#e6e1d8;
+      --accent:#5c4a2a; --accent2:#8b6f3e;
+      --serif:'EB Garamond','Noto Serif JP','Songti SC',Georgia,serif;
+      --mono:'DM Mono',monospace;
     }
+    body { font-family:var(--serif); background:var(--paper); color:var(--ink); font-size:17px; line-height:1.8; min-height:100vh; }
 
-    body {
-      font-family: var(--serif);
-      background: var(--paper);
-      color: var(--ink);
-      font-size: 17px;
-      line-height: 1.75;
-      min-height: 100vh;
-    }
+    /* NAV */
+    nav { display:flex; align-items:center; justify-content:space-between; padding:1.25rem 2.5rem; border-bottom:1px solid var(--paper3); position:sticky; top:0; background:var(--paper); z-index:10; gap:1rem; }
+    .nav-left { display:flex; align-items:baseline; gap:2rem; }
+    .nav-logo { font-family:var(--mono); font-size:14px; color:var(--ink); cursor:pointer; letter-spacing:0.03em; }
+    .nav-logo:hover { color:var(--accent); }
+    .nav-links { display:flex; gap:1.25rem; }
+    .nav-link { font-family:var(--mono); font-size:12px; color:var(--ink3); cursor:pointer; padding-bottom:2px; border-bottom:1px solid transparent; transition:color .2s,border-color .2s; letter-spacing:0.04em; }
+    .nav-link:hover,.nav-link.active { color:var(--accent); border-bottom-color:var(--accent); }
+    .lang-switcher { display:flex; gap:4px; }
+    .lang-btn { font-family:var(--mono); font-size:11px; padding:3px 8px; border-radius:3px; border:1px solid var(--paper3); background:transparent; color:var(--ink3); cursor:pointer; transition:all .2s; }
+    .lang-btn:hover { border-color:var(--accent2); color:var(--accent2); }
+    .lang-btn.active { background:var(--paper2); color:var(--accent); border-color:var(--accent2); }
 
-    /* ── Navigation ── */
-    nav {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 1.5rem 2.5rem 1rem;
-      border-bottom: 1px solid var(--paper3);
-      position: sticky;
-      top: 0;
-      background: var(--paper);
-      z-index: 10;
-    }
-    .nav-name {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--ink2);
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .nav-name:hover { color: var(--ink); }
-    .nav-links { display: flex; gap: 1.5rem; }
-    .nav-link {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--ink3);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      padding-bottom: 2px;
-      border-bottom: 1px solid transparent;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .nav-link:hover, .nav-link.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
+    /* PAGES */
+    .page { display:none; }
+    .page.active { display:block; }
 
-    /* ── Pages ── */
-    .page { display: none; }
-    .page.active { display: block; }
+    /* HOME */
+    .home-wrap { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 57px); }
+    .sidebar { padding:3rem 2rem 3rem 2.5rem; border-right:1px solid var(--paper3); display:flex; flex-direction:column; gap:2.25rem; }
+    .avatar-wrap { width:72px; height:72px; border-radius:50%; background:var(--paper3); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:11px; color:var(--ink3); overflow:hidden; border:1px solid var(--paper3); flex-shrink:0; }
+    .avatar-wrap img { width:100%; height:100%; object-fit:cover; }
+    .sidebar-name { font-size:1.4rem; font-weight:500; line-height:1.3; }
+    .sidebar-sub { font-size:13px; color:var(--ink2); font-style:italic; margin-top:3px; }
+    .sb-label { font-family:var(--mono); font-size:10.5px; color:var(--ink3); letter-spacing:0.09em; text-transform:uppercase; margin-bottom:7px; }
+    .sb-item { font-size:13.5px; color:var(--ink2); margin-bottom:4px; line-height:1.55; }
+    .contact-link { font-family:var(--mono); font-size:12px; color:var(--accent2); text-decoration:none; display:block; margin-bottom:3px; }
+    .contact-link:hover { color:var(--accent); }
 
-    /* ── Home ── */
-    .home-body {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: calc(100vh - 60px);
-    }
-    .sidebar {
-      padding: 2.5rem 2rem 2.5rem 2.5rem;
-      border-right: 1px solid var(--paper3);
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-    .avatar-wrap {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      background: var(--paper3);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 13px;
-      color: var(--ink2);
-      border: 1px solid var(--paper3);
-      overflow: hidden;
-    }
-    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .sidebar-name { font-size: 1.4rem; line-height: 1.3; font-weight: 500; }
-    .sidebar-sub { font-size: 14px; color: var(--ink2); font-style: italic; margin-top: 2px; }
-    .sidebar-label {
-      font-family: var(--mono); font-size: 11px;
-      color: var(--ink3); letter-spacing: 0.08em;
-      text-transform: uppercase; margin-bottom: 8px;
-    }
-    .sidebar-item { font-size: 14px; color: var(--ink2); margin-bottom: 4px; line-height: 1.5; }
-    .sidebar-item span { color: var(--ink3); font-size: 12px; font-family: var(--mono); }
-    .contact-link {
-      font-family: var(--mono); font-size: 12px;
-      color: var(--accent2); text-decoration: none;
-      display: block; margin-bottom: 4px;
-    }
-    .contact-link:hover { color: var(--accent); }
+    .main { padding:3rem 3rem 3rem 2.5rem; }
+    .sec-label { font-family:var(--mono); font-size:10.5px; letter-spacing:0.1em; color:var(--ink3); text-transform:uppercase; margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--paper3); }
+    .bio { font-size:1.05rem; line-height:2; margin-bottom:1.4rem; color:var(--ink); }
+    .bio em { color:var(--accent2); font-style:italic; }
+    .card-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:0.5rem; }
+    .card { background:var(--paper2); border:1px solid var(--paper3); border-radius:4px; padding:0.9rem 1rem; cursor:pointer; transition:border-color .2s; }
+    .card:hover { border-color:var(--accent2); }
+    .card-title { font-size:0.92rem; font-weight:500; margin-bottom:3px; }
+    .card-desc { font-size:12.5px; color:var(--ink2); font-style:italic; line-height:1.5; }
 
-    .main-content { padding: 2.5rem 3rem 2.5rem 2.5rem; }
-    .section-title {
-      font-family: var(--mono); font-size: 11px;
-      letter-spacing: 0.1em; color: var(--ink3);
-      text-transform: uppercase;
-      margin-bottom: 1rem; padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--paper3);
-    }
-    .bio-text {
-      font-size: 1.05rem; color: var(--ink);
-      line-height: 1.9; margin-bottom: 1.5rem;
-    }
-    .bio-text em { color: var(--accent2); font-style: italic; }
+    /* NOTES LIST */
+    .page-wrap { padding:2.5rem 3rem; max-width:780px; }
+    .page-heading { font-size:1.9rem; font-weight:400; margin-bottom:4px; }
+    .page-sub { font-size:13.5px; color:var(--ink2); font-style:italic; margin-bottom:2rem; }
+    .post-list { display:flex; flex-direction:column; }
+    .post-row { padding:1.2rem 0; border-bottom:1px solid var(--paper3); cursor:pointer; display:grid; grid-template-columns:32px 1fr auto; gap:0.5rem 1rem; align-items:baseline; }
+    .post-row:hover .post-title { color:var(--accent); }
+    .post-n { font-family:var(--mono); font-size:11px; color:var(--ink3); }
+    .post-title { font-size:1rem; transition:color .2s; }
+    .post-date { font-family:var(--mono); font-size:11px; color:var(--ink3); white-space:nowrap; }
+    .post-exc { font-size:13px; color:var(--ink2); font-style:italic; line-height:1.6; grid-column:2/-1; margin-top:1px; }
+    .wip { display:inline-block; font-family:var(--mono); font-size:10px; background:var(--paper2); border:1px solid var(--paper3); border-radius:3px; padding:1px 6px; color:var(--ink3); margin-left:6px; vertical-align:middle; }
 
-    .interest-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px; margin-bottom: 2rem;
-    }
-    .interest-card {
-      background: var(--paper2);
-      border: 1px solid var(--paper3);
-      border-radius: 4px; padding: 1rem 1.1rem;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-    .interest-card:hover { border-color: var(--accent2); }
-    .interest-title { font-size: 0.95rem; font-weight: 500; margin-bottom: 4px; }
-    .interest-desc { font-size: 13px; color: var(--ink2); font-style: italic; line-height: 1.5; }
+    /* SINGLE POST */
+    .post-wrap { padding:2.5rem 3rem; max-width:660px; }
+    .back { font-family:var(--mono); font-size:12px; color:var(--ink3); cursor:pointer; margin-bottom:2rem; display:inline-block; transition:color .2s; }
+    .back:hover { color:var(--accent); }
+    .post-h { font-size:1.85rem; font-weight:400; line-height:1.25; margin-bottom:6px; }
+    .post-meta-row { font-family:var(--mono); font-size:11.5px; color:var(--ink3); margin-bottom:2.25rem; }
+    .post-body p { margin-bottom:1.35rem; font-size:1.02rem; line-height:1.95; }
+    .post-body blockquote { border-left:2px solid var(--accent2); padding:0.5rem 1.25rem; margin:1.5rem 0; font-style:italic; color:var(--ink2); font-size:0.97rem; }
+    .post-body h2 { font-size:1.15rem; font-weight:500; margin:2rem 0 0.75rem; }
 
-    /* ── Notes list ── */
-    .page-body { padding: 2.5rem 3rem; max-width: 800px; }
-    .page-header { margin-bottom: 2rem; }
-    .page-header h1 { font-size: 2rem; font-weight: 400; }
-    .page-header p { font-size: 14px; color: var(--ink2); font-style: italic; margin-top: 4px; }
-
-    .post-list { display: flex; flex-direction: column; }
-    .post-item {
-      padding: 1.25rem 0;
-      border-bottom: 1px solid var(--paper3);
-      cursor: pointer;
-      display: grid;
-      grid-template-columns: 36px 1fr auto;
-      gap: 0.75rem 1rem;
-      align-items: baseline;
-    }
-    .post-item:hover .post-title { color: var(--accent); }
-    .post-num { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
-    .post-title { font-size: 1.05rem; transition: color 0.2s; }
-    .post-meta { font-family: var(--mono); font-size: 11px; color: var(--ink3); white-space: nowrap; }
-    .post-excerpt {
-      font-size: 14px; color: var(--ink2);
-      font-style: italic; margin-top: 2px;
-      line-height: 1.6; grid-column: 2 / -1;
-    }
-
-    /* ── Single post ── */
-    .post-body { padding: 2.5rem 3rem; max-width: 680px; }
-    .back-btn {
-      font-family: var(--mono); font-size: 12px;
-      color: var(--ink3); cursor: pointer;
-      margin-bottom: 2rem; display: inline-block;
-      transition: color 0.2s;
-    }
-    .back-btn:hover { color: var(--accent); }
-    .post-heading { font-size: 1.9rem; font-weight: 400; line-height: 1.25; margin-bottom: 0.5rem; }
-    .post-date { font-family: var(--mono); font-size: 12px; color: var(--ink3); margin-bottom: 2.5rem; }
-    .post-content p { margin-bottom: 1.4rem; font-size: 1.02rem; line-height: 1.95; }
-    .post-content blockquote {
-      border-left: 2px solid var(--accent2);
-      padding: 0.5rem 1.25rem;
-      margin: 1.5rem 0;
-      font-style: italic; color: var(--ink2); font-size: 0.97rem;
-    }
-    .post-content h2 {
-      font-size: 1.2rem; font-weight: 500;
-      margin: 2rem 0 0.75rem; color: var(--ink);
-    }
-
-    /* ── CV ── */
-    .cv-body { padding: 2.5rem 3rem; max-width: 800px; }
-    .cv-top {
-      display: flex; align-items: baseline;
-      justify-content: space-between; margin-bottom: 2rem;
-    }
-    .cv-section { margin-bottom: 2.5rem; }
-    .cv-section h3 {
-      font-size: 0.85rem; font-family: var(--mono);
-      letter-spacing: 0.1em; color: var(--ink3);
-      text-transform: uppercase;
-      margin-bottom: 1.25rem; padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--paper3);
-    }
-    .cv-item {
-      display: grid; grid-template-columns: 120px 1fr;
-      gap: 1rem; margin-bottom: 1.25rem;
-      font-size: 0.97rem;
-    }
-    .cv-year { font-family: var(--mono); font-size: 12px; color: var(--ink3); padding-top: 3px; }
-    .cv-detail strong { display: block; font-weight: 500; }
-    .cv-detail span { font-size: 13px; color: var(--ink2); font-style: italic; }
-    .cv-note { font-size: 13px; color: var(--ink2); margin-top: 3px; }
-
-    .download-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: var(--mono); font-size: 12px;
-      background: var(--paper2); border: 1px solid var(--paper3);
-      border-radius: 3px; padding: 6px 14px;
-      cursor: pointer; color: var(--ink2);
-      text-decoration: none; transition: border-color 0.2s, color 0.2s;
-    }
-    .download-btn:hover { border-color: var(--accent2); color: var(--accent); }
-
-    /* ── Responsive ── */
-    @media (max-width: 700px) {
-      .home-body { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid var(--paper3); padding: 1.5rem; }
-      .main-content { padding: 1.5rem; }
-      .interest-grid { grid-template-columns: 1fr; }
-      .page-body, .post-body, .cv-body { padding: 1.5rem; }
-      nav { padding: 1rem 1.5rem; }
+    /* RESPONSIVE */
+    @media(max-width:700px){
+      .home-wrap { grid-template-columns:1fr; }
+      .sidebar { border-right:none; border-bottom:1px solid var(--paper3); padding:1.5rem; }
+      .main { padding:1.5rem; }
+      .card-grid { grid-template-columns:1fr; }
+      .page-wrap,.post-wrap { padding:1.5rem; }
+      nav { padding:1rem 1.5rem; }
+      .nav-left { gap:1rem; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-name" onclick="goNav('home')">soi501</a>
-  <div class="nav-links">
-    <span class="nav-link active" id="nav-home" onclick="goNav('home')">home</span>
-    <span class="nav-link" id="nav-notes" onclick="goNav('notes')">notes</span>
-    <span class="nav-link" id="nav-cv" onclick="goNav('cv')">cv</span>
+  <div class="nav-left">
+    <span class="nav-logo" onclick="goNav('home')">soi501</span>
+    <div class="nav-links">
+      <span class="nav-link active" id="nav-home" onclick="goNav('home')" data-i18n="nav.home"></span>
+      <span class="nav-link" id="nav-notes" onclick="goNav('notes')" data-i18n="nav.notes"></span>
+    </div>
+  </div>
+  <div class="lang-switcher">
+    <button class="lang-btn" onclick="setLang('ja')">日本語</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
 </nav>
 
-<!-- ══ HOME ══ -->
+<!-- HOME -->
 <div class="page active" id="page-home">
-  <div class="home-body">
+  <div class="home-wrap">
     <div class="sidebar">
-      <div class="avatar-wrap">头像</div>
+      <div class="avatar-wrap">photo</div>
       <div>
-        <div class="sidebar-name">そい<br><em style="font-size:1rem;color:var(--ink2)">SOI</em></div>
-        <div class="sidebar-sub">「物語」をどこまでも追い求める者</div>
+        <div class="sidebar-name">そい <span style="font-size:1rem;color:var(--ink2);font-weight:400">Soi</span></div>
+        <div class="sidebar-sub" data-i18n="home.role"></div>
       </div>
       <div>
-        <div class="sidebar-label">所属</div>
-        <div class="sidebar-item">上海外国語大学 <span>日本語学部在籍</span></div>
-        <div class="sidebar-item">創価大学 <span>文学部在籍（ダブル・ディグリー）</span></div>
-      </div>
-      <div>
-        <div class="sidebar-label">研究テーマ</div>
-        <div class="sidebar-item">認知言語学</div>
-        <div class="sidebar-item">メタファー</div>
-        <div class="sidebar-item">概念統合理論</div>
-      </div>
-      <div>
-        <div class="sidebar-label">連絡先</div>
-        <!-- 把下面的邮箱换成你的 -->
-        <a class="contact-link" href="mailto:e2317336@soka-u.jp">e2317336@soka-u.jp</a>
+        <div class="sb-label" data-i18n="sidebar.interests"></div>
+        <div class="sb-item">認知言語学</div>
+        <div class="sb-item">メタファー</div>
+        <div class="sb-item">概念統合理論</div>
       </div>
     </div>
-
-    <div class="main-content">
-      <div class="section-title">About Me</div>
-      <!-- ↓ 自我介绍，改成你自己的文字 -->
-      <p class="bio-text">
-        你好，我是一名汉语言文学本科生，目前正备考<em>语言学方向的研究生</em>。
-        我对语言如何塑造思维、文字如何承载历史怀有持久的好奇心——
-        尤其是汉语在漫长演变中所保留下来的结构痕迹。
-      </p>
-      <p class="bio-text">
-        这里是我的学习记录与思考空间。不一定正确，但都是认真想过的。
-      </p>
-
-      <div class="section-title" style="margin-top:2rem">当前关注</div>
-      <!-- ↓ 四张兴趣卡片，点击会跳到 notes 页面 -->
-      <div class="interest-grid">
-        <div class="interest-card" onclick="goNav('notes')">
-          <div class="interest-title">历史音韵学</div>
-          <div class="interest-desc">中古汉语声调演变及方言存留问题</div>
+    <div class="main">
+      <div class="sec-label" data-i18n="home.about"></div>
+      <p class="bio" data-i18n="home.bio1"></p>
+      <p class="bio" data-i18n="home.bio2"></p>
+      <div class="sec-label" style="margin-top:2rem" data-i18n="home.interests_title"></div>
+      <div class="card-grid">
+        <div class="card" onclick="goNav('notes')">
+          <div class="card-title" data-i18n="card1.title"></div>
+          <div class="card-desc" data-i18n="card1.desc"></div>
         </div>
-        <div class="interest-card" onclick="goNav('notes')">
-          <div class="interest-title">认知语言学入门</div>
-          <div class="interest-desc">Lakoff & Johnson 的概念隐喻框架笔记</div>
+        <div class="card" onclick="goNav('notes')">
+          <div class="card-title" data-i18n="card2.title"></div>
+          <div class="card-desc" data-i18n="card2.desc"></div>
         </div>
-        <div class="interest-card" onclick="goNav('notes')">
-          <div class="interest-title">文学文体分析</div>
-          <div class="interest-desc">从语体学视角重读现代汉语小说</div>
+        <div class="card" onclick="goNav('notes')">
+          <div class="card-title" data-i18n="card3.title"></div>
+          <div class="card-desc" data-i18n="card3.desc"></div>
         </div>
-        <div class="interest-card" onclick="goNav('notes')">
-          <div class="interest-title">备考笔记</div>
-          <div class="interest-desc">语言学各分支的梳理与记忆方法</div>
+        <div class="card" onclick="goNav('notes')">
+          <div class="card-title" data-i18n="card4.title"></div>
+          <div class="card-desc" data-i18n="card4.desc"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ NOTES LIST ══ -->
+<!-- NOTES LIST -->
 <div class="page" id="page-notes">
-  <div class="page-body">
-    <div class="page-header">
-      <h1>笔记与随想</h1>
-      <p>读书记录 · 学习心得 · 零碎思考</p>
-    </div>
-    <!-- ↓ 每一个 post-item 是一篇笔记的入口，onclick 里的数字对应下面 posts 数组的序号（从 0 开始） -->
-    <div class="post-list">
-      <div class="post-item" onclick="showPost(0)">
-        <span class="post-num">01</span>
-        <span class="post-title">为什么汉字没有"拼音化"——兼谈文字与语言的关系</span>
-        <span class="post-meta">2025.03</span>
-        <span class="post-excerpt">文字改革曾是上世纪中国最激烈的论争之一。当所有人都在问"能不能"，很少人问"应不应该"……</span>
-      </div>
-      <div class="post-item" onclick="showPost(1)">
-        <span class="post-num">02</span>
-        <span class="post-title">读《语言论》：萨丕尔给我的三个震动</span>
-        <span class="post-meta">2025.04</span>
-        <span class="post-excerpt">第一次读萨丕尔，第二章就把我读愣了。他说语言不是工具，而是"通向现实的道路"……</span>
-      </div>
-      <div class="post-item" onclick="showPost(2)">
-        <span class="post-num">03</span>
-        <span class="post-title">备考语言学：我如何用"地图法"整理知识框架</span>
-        <span class="post-meta">2025.05</span>
-        <span class="post-excerpt">语言学的各个分支乍一看彼此独立，但其实有一条隐线穿过它们——从声音到意义，从形式到使用……</span>
-      </div>
-      <!-- ↓ 复制上面一段来添加新笔记，记得改 showPost() 里的数字，并在下面的 posts 数组里加对应内容 -->
-    </div>
+  <div class="page-wrap">
+    <div class="page-heading" data-i18n="notes.title"></div>
+    <div class="page-sub" data-i18n="notes.sub"></div>
+    <div class="post-list" id="post-list"></div>
   </div>
 </div>
 
-<!-- ══ SINGLE POST（自动填充，不需要改这里）══ -->
+<!-- SINGLE POST -->
 <div class="page" id="page-post">
-  <div class="post-body">
-    <span class="back-btn" onclick="goNav('notes')">← 返回笔记</span>
-    <h1 class="post-heading" id="post-title"></h1>
-    <div class="post-date" id="post-date"></div>
-    <div class="post-content" id="post-content"></div>
-  </div>
-</div>
-
-<!-- ══ CV ══ -->
-<div class="page" id="page-cv">
-  <div class="cv-body">
-    <div class="cv-top">
-      <div>
-        <h1 style="font-size:2rem;font-weight:400">简历</h1>
-        <p style="font-size:14px;color:var(--ink2);font-style:italic;margin-top:4px">Curriculum Vitae</p>
-      </div>
-      <!-- 把 href 换成你的 PDF 链接，或者删掉这个按钮 -->
-      <a class="download-btn" href="#" target="_blank">↓ 下载 PDF</a>
-    </div>
-
-    <div class="cv-section">
-      <h3>教育经历</h3>
-      <div class="cv-item">
-        <span class="cv-year">2022 — 至今</span>
-        <div class="cv-detail">
-          <strong>汉语言文学，本科</strong>
-          <span>XX大学，文学院</span>
-          <div class="cv-note">GPA: x.x / 4.0 &nbsp;·&nbsp; 主修方向：现代汉语、古代文学</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="cv-section">
-      <h3>研究 / 学术经历</h3>
-      <div class="cv-item">
-        <span class="cv-year">2024</span>
-        <div class="cv-detail">
-          <strong>课程论文：XX题目</strong>
-          <span>现代汉语课，指导教师：XX老师</span>
-          <div class="cv-note">探讨了……的语言现象，运用了……分析框架</div>
-        </div>
-      </div>
-      <div class="cv-item">
-        <span class="cv-year">2024</span>
-        <div class="cv-detail">
-          <strong>参加 XX 学术讲座 / 工作坊</strong>
-          <span>XX大学主办</span>
-        </div>
-      </div>
-      <!-- 复制上面一段来添加新经历 -->
-    </div>
-
-    <div class="cv-section">
-      <h3>技能与语言</h3>
-      <div class="cv-item">
-        <span class="cv-year">语言</span>
-        <div class="cv-detail">
-          <span>普通话（母语）· 英语（学术阅读流畅）· 古汉语（基础）</span>
-        </div>
-      </div>
-      <div class="cv-item">
-        <span class="cv-year">工具</span>
-        <div class="cv-detail">
-          <span>Microsoft Office · 基础 Python · 语料库检索工具（AntConc）</span>
-        </div>
-      </div>
-    </div>
+  <div class="post-wrap">
+    <span class="back" onclick="goNav('notes')" data-i18n="post.back"></span>
+    <h1 class="post-h" id="post-title"></h1>
+    <div class="post-meta-row" id="post-date"></div>
+    <div class="post-body" id="post-body"></div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-//  笔记内容 —— 在这里写你的文章
-//  每篇笔记是一个对象，包含 title / date / content
-//  content 里可以用 <p>、<blockquote>、<h2> 标签
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// i18n strings
+// ═══════════════════════════════════════════
+const i18n = {
+  ja: {
+    "nav.home": "ホーム",
+    "nav.notes": "ノート",
+    "home.role": "文学・言語学",
+    "home.about": "About",
+    "home.bio1": "「物語」をどこまでも追い求める者。言語がいかに意味を生み出し、物語を形作るかに魅せられています。",
+    "home.bio2": "ここは私の思考の記録です。読書ノート、学びの断片、言語への問いかけ——すべて途中のものばかりですが、真剣に考えたことです。",
+    "home.interests_title": "関心領域",
+    "sidebar.interests": "研究テーマ",
+    "card1.title": "概念メタファー",
+    "card1.desc": "Lakoff & Johnson の枠組みから言語と思考の関係を探る",
+    "card2.title": "概念統合理論",
+    "card2.desc": "Fauconnier & Turner のブレンディング理論とその応用",
+    "card3.title": "物語と認知",
+    "card3.desc": "ナラティブはどのように意味を構築するか",
+    "card4.title": "読書ノート",
+    "card4.desc": "言語学・文学・思想の読書記録",
+    "notes.title": "ノート",
+    "notes.sub": "読書記録・思考の断片・学びの痕跡",
+    "post.back": "← ノートに戻る",
+    "wip": "翻訳準備中",
+  },
+  zh: {
+    "nav.home": "主页",
+    "nav.notes": "笔记",
+    "home.role": "文学 · 语言学",
+    "home.about": "关于",
+    "home.bio1": "一个不停追寻「物语」的人。着迷于语言如何生成意义、如何塑造叙事。",
+    "home.bio2": "这里是我的思考记录——读书笔记、学习的碎片、对语言的追问。都是未完成的，但都是认真想过的。",
+    "home.interests_title": "关注领域",
+    "sidebar.interests": "研究主题",
+    "card1.title": "概念隐喻",
+    "card1.desc": "从 Lakoff & Johnson 的框架探索语言与思维的关系",
+    "card2.title": "概念整合理论",
+    "card2.desc": "Fauconnier & Turner 的混合理论及其应用",
+    "card3.title": "叙事与认知",
+    "card3.desc": "叙事如何构建意义",
+    "card4.title": "读书笔记",
+    "card4.desc": "语言学、文学、思想的阅读记录",
+    "notes.title": "笔记",
+    "notes.sub": "读书记录 · 思考碎片 · 学习痕迹",
+    "post.back": "← 返回笔记",
+    "wip": "翻译准备中",
+  },
+  en: {
+    "nav.home": "Home",
+    "nav.notes": "Notes",
+    "home.role": "Literature · Linguistics",
+    "home.about": "About",
+    "home.bio1": "A perpetual seeker of stories. Fascinated by how language generates meaning and shapes narrative.",
+    "home.bio2": "This is a space for my thinking — reading notes, fragments of learning, questions about language. All works in progress, but all sincerely considered.",
+    "home.interests_title": "Current Interests",
+    "sidebar.interests": "Research Themes",
+    "card1.title": "Conceptual Metaphor",
+    "card1.desc": "Exploring language and thought via Lakoff & Johnson",
+    "card2.title": "Conceptual Integration",
+    "card2.desc": "Fauconnier & Turner's blending theory and applications",
+    "card3.title": "Narrative & Cognition",
+    "card3.desc": "How narratives construct meaning",
+    "card4.title": "Reading Notes",
+    "card4.desc": "Notes on linguistics, literature, and ideas",
+    "notes.title": "Notes",
+    "notes.sub": "Reading records · Fragments of thought · Traces of learning",
+    "post.back": "← Back to Notes",
+    "wip": "Translation pending",
+  }
+};
+
+// ═══════════════════════════════════════════
+// POSTS
+// 新增文章：在这里复制一个 {} 块
+// 日文版没有时：把 content_ja 留空字符串 ""
+// ═══════════════════════════════════════════
 const posts = [
   {
-    title: "为什么汉字没有"拼音化"——兼谈文字与语言的关系",
-    date: "2025年3月",
-    content: `
-      <p>文字改革曾是上世纪中国最激烈的论争之一。从晚清知识分子到五四一代，再到新中国成立后的系列政策，汉字的命运反复被搬上争论的桌面。</p>
-      <p>但当所有人都在问"能不能拼音化"，很少有人认真追问：文字和语言到底是什么关系？拼音化之后，我们失去的究竟是什么？</p>
-      <blockquote>文字不是语言的附庸，而是语言记忆的外化形式。——某种程度上，汉字是汉语几千年语音演变的化石。</blockquote>
-      <p>这篇笔记想从语言学的角度来想这个问题，尝试区分"文字系统"和"语言系统"，看看历史语言学能给我们什么启示。</p>
-    `
+    title_ja: "言語はなぜ「隠喩」で溢れているのか",
+    title_zh: "语言为何充满「隐喻」",
+    title_en: "Why Is Language Full of Metaphors?",
+    date: "2025.05",
+    excerpt_ja: "私たちが「時間を無駄にする」と言うとき、時間をすでにモノとして捉えている——",
+    excerpt_zh: "当我们说「浪费时间」时，已经把时间当作了某种可以挥霍的东西——",
+    excerpt_en: "When we say we 'waste time', we are already treating time as a thing that can be spent—",
+    content_ja: `<p>私たちは毎日、無数の隠喩を使いながら話している。「時間を無駄にする」「議論に勝つ」「アイデアが浮かぶ」——これらはすべて、抽象的な概念をより具体的な何かとして理解していることを示している。</p>
+<p>Lakoff と Johnson は『Metaphors We Live By』の中で、隠喩は単なる言語的な装飾ではなく、私たちの思考そのものを構造化していると主張した。</p>
+<blockquote>概念メタファーとは、ある概念領域を別の概念領域によって理解することである。</blockquote>
+<p>例えば「議論は戦争だ」という概念メタファー。「主張を攻撃する」「防御を固める」「相手を打ち負かす」——私たちは議論を戦争として体験し、そのように語る。もし「議論はダンスだ」というメタファーで考えたとしたら、私たちの議論の仕方はどう変わるだろうか。</p>`,
+    content_zh: `<p>我们每天说话时都在使用无数隐喻。「浪费时间」「赢得争论」「想法涌现」——这些都说明我们在用更具体的事物来理解抽象概念。</p>
+<p>Lakoff 和 Johnson 在《我们赖以生存的隐喻》中提出，隐喻不只是语言的装饰，而是构建我们思维本身的方式。</p>
+<blockquote>概念隐喻，就是用一个概念域来理解另一个概念域。</blockquote>
+<p>以「争论是战争」这个概念隐喻为例。「攻击对方的论点」「巩固自己的立场」「击败对手」——我们把争论体验为战争，也这样谈论它。如果我们改用「争论是舞蹈」这个隐喻来思考，我们的争论方式会有什么不同？</p>`,
+    content_en: ""
   },
   {
-    title: "读《语言论》：萨丕尔给我的三个震动",
-    date: "2025年4月",
-    content: `
-      <p>第一次读萨丕尔，第二章就把我读愣了。他说语言不是工具，而是"通向现实的道路"——这句话读起来很玄，但他接下来的论证让我觉得，这不是修辞，而是严肃的认识论命题。</p>
-      <h2>一、任意性不等于随机性</h2>
-      <p>萨丕尔认为任意性是语言得以系统化的前提，而非缺陷。这和我之前以为的完全相反。</p>
-      <h2>二、语言变化是有规律的漂移</h2>
-      <p>这一点在《语言论》第七章讲得很清楚，后来我在历史语言学的课上又反复碰到这个观念。</p>
-      <blockquote>语言变化，就像一条慢慢改道的河流——它总是在流，方向却悄悄在变。</blockquote>
-      <h2>三、翻译的不可能性</h2>
-      <p>萨丕尔对翻译的悲观让我很不舒服，但也很难反驳。</p>
-    `
-  },
-  {
-    title: "备考语言学：我如何用"地图法"整理知识框架",
-    date: "2025年5月",
-    content: `
-      <p>语言学的各个分支乍一看彼此独立：音韵、形态、句法、语义、语用……每一块都有自己的概念体系和分析工具。</p>
-      <p>但其实有一条隐线穿过它们：从声音到意义，从形式到使用。如果你能把这条线看清楚，记忆就容易多了。</p>
-      <p>我把这个方法叫做"地图法"——不是背知识点，而是画地图，把各个概念标在它们应该在的位置上，然后画出它们之间的路。</p>
-      <blockquote>死记硬背是走迷宫，地图法是从上方看迷宫的全貌。</blockquote>
-      <p>具体怎么操作：先从最高层级开始——语言是什么，研究语言的方式有哪些（共时/历时、微观/宏观）。然后往下展开每个分支，重点记"这个分支关心什么问题"，而不是"这个分支有哪些术语"。</p>
-      <p>这篇笔记会陆续更新我的备考地图。欢迎一起讨论。</p>
-    `
+    title_ja: "『言語論』を読んで：サピアが与えてくれた三つの衝撃",
+    title_zh: "读《语言论》：萨丕尔给我的三个震动",
+    title_en: "Reading Sapir's Language: Three Revelations",
+    date: "2025.04",
+    excerpt_ja: "サピアは言語を「ツール」とは呼ばなかった。それは「現実への道」だと——",
+    excerpt_zh: "萨丕尔没有把语言叫做「工具」。他说那是「通向现实的道路」——",
+    excerpt_en: "Sapir did not call language a tool. He called it a path to reality—",
+    content_ja: `<p>サピアの『言語論』第二章を読んで、思わず手が止まった。「言語はツールではなく、現実への道だ」——この言葉は一見抽象的に見えるが、続く論証を読むと、これが修辞ではなく真剣な認識論的主張だとわかる。</p>
+<p>三つの衝撃を記録しておく。</p>
+<h2>一、恣意性は欠陥ではない</h2>
+<p>サピアによれば、言語記号の恣意性こそが、言語を体系化させる前提条件だ。これは私がずっと思っていたこととまったく逆だった。</p>
+<h2>二、言語変化は「漂流」である</h2>
+<blockquote>言語は常に変化している。しかしその変化には方向があり、規則がある。</blockquote>
+<h2>三、翻訳の不可能性</h2>
+<p>翻訳に対するサピアの悲観は、読んでいて居心地が悪かった。しかし反論もできなかった。</p>`,
+    content_zh: `<p>读萨丕尔《语言论》第二章，我愣了一下。「语言不是工具，而是通向现实的道路」——这句话乍看很玄，但读完他的论证，我意识到这不是修辞，而是严肃的认识论命题。</p>
+<p>记录三个最让我震动的地方。</p>
+<h2>一、任意性不是缺陷</h2>
+<p>萨丕尔认为语言符号的任意性正是语言得以系统化的前提。这和我之前的理解完全相反。</p>
+<h2>二、语言变化是「漂移」</h2>
+<blockquote>语言总在变化，但变化有方向，有规律。</blockquote>
+<h2>三、翻译的不可能性</h2>
+<p>萨丕尔对翻译的悲观让我不舒服，但也很难反驳。</p>`,
+    content_en: ""
   }
-  // 在这里加一个逗号，然后复制上面的 {} 块来添加新文章
 ];
 
-// ══════════════════════════════════════════════
-//  页面导航逻辑（不需要改）
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// Language & Navigation logic
+// ═══════════════════════════════════════════
+let currentLang = 'ja';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang === 'ja' ? 'ja' : lang === 'zh' ? 'zh-CN' : 'en';
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    if ((lang === 'ja' && b.textContent === '日本語') ||
+        (lang === 'zh' && b.textContent === '中文') ||
+        (lang === 'en' && b.textContent === 'EN')) {
+      b.classList.add('active');
+    }
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang] && i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+  renderPostList();
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo(0, 0);
 }
+
 function goNav(id) {
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const navEl = document.getElementById('nav-' + id);
-  if (navEl) navEl.classList.add('active');
+  const el = document.getElementById('nav-' + id);
+  if (el) el.classList.add('active');
+  if (id === 'notes') renderPostList();
   showPage(id);
 }
+
+function renderPostList() {
+  const container = document.getElementById('post-list');
+  const wip = i18n[currentLang]['wip'] || 'TL pending';
+  container.innerHTML = posts.map((p, i) => {
+    const title = p['title_' + currentLang] || p.title_ja;
+    const excerpt = p['excerpt_' + currentLang] || p['excerpt_ja'];
+    const hasContent = !!(p['content_' + currentLang]);
+    const wipBadge = !hasContent ? `<span class="wip">${wip}</span>` : '';
+    return `<div class="post-row" onclick="showPost(${i})">
+      <span class="post-n">${String(i+1).padStart(2,'0')}</span>
+      <span class="post-title">${title}${wipBadge}</span>
+      <span class="post-date">${p.date}</span>
+      <span class="post-exc">${excerpt}</span>
+    </div>`;
+  }).join('');
+}
+
 function showPost(i) {
   const p = posts[i];
-  document.getElementById('post-title').textContent = p.title;
+  const lang = currentLang;
+  const title = p['title_' + lang] || p.title_ja;
+  const content = p['content_' + lang] || p['content_ja'];
+  document.getElementById('post-title').textContent = title;
   document.getElementById('post-date').textContent = p.date;
-  document.getElementById('post-content').innerHTML = p.content;
+  if (content) {
+    document.getElementById('post-body').innerHTML = content;
+  } else {
+    const fallbackLang = lang === 'zh' ? 'ja' : 'zh';
+    const fallback = p['content_' + fallbackLang] || p.content_ja;
+    const wipMsg = lang === 'zh' ? '※ 翻译尚未完成，以下为日文原文。'
+                  : lang === 'en' ? '※ Translation pending. Showing original below.'
+                  : '';
+    document.getElementById('post-body').innerHTML =
+      `<p style="font-family:var(--mono);font-size:12px;color:var(--ink3);margin-bottom:1.5rem">${wipMsg}</p>` + fallback;
+  }
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   document.getElementById('nav-notes').classList.add('active');
   showPage('post');
 }
+
+// Init
+setLang('ja');
 </script>
 </body>
 </html>
