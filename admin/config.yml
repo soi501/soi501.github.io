@@ -1,0 +1,24 @@
+backend:
+  name: github
+  repo: soi501/soi501.github.io
+  branch: main
+  site_domain: stupendous-torrone-570aae.netlify.app
+
+media_folder: "images/uploads"
+
+collections:
+  - name: "posts"
+    label: "ノート / 笔记"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "タイトル (日本語)", name: "title_ja", widget: "string" }
+      - { label: "标题（中文）", name: "title_zh", widget: "string" }
+      - { label: "Title (EN)", name: "title_en", widget: "string", required: false }
+      - { label: "日付 / 日期", name: "date", widget: "datetime" }
+      - { label: "抜粋 (日本語)", name: "excerpt_ja", widget: "text" }
+      - { label: "摘要（中文）", name: "excerpt_zh", widget: "text" }
+      - { label: "本文 (日本語)", name: "body_ja", widget: "markdown" }
+      - { label: "正文（中文）", name: "body_zh", widget: "markdown", required: false }
+      - { label: "Body (EN)", name: "body_en", widget: "markdown", required: false }
